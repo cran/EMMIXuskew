@@ -1,0 +1,6 @@
+useDynLib(EMMIXuskew)
+export("dmst", "dfmmst", "dmt", "pmt", "rmst", "rfmmst", "fmmst",
+    "dfmmt", "fmmt", "delta.test", "fmmstDA", "fmmst.contour.2d",
+    "fmmst.contour.3d", "summary.fmmst", "summary.fmmt")
+import(graphics)
+importFrom(MASS, mvrnorm)

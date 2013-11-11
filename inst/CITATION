@@ -1,0 +1,19 @@
+citHeader("To cite EMMIXuskew in publications use:")
+
+citEntry(entry = "Article",
+  title        = "{EMMIXuskew}: An {R} Package for Fitting Mixtures of Multivariate Skew $t$ Distributions via the {EM} Algorithm",
+  author       = personList(as.person("Sharon  X. Lee"),
+                   as.person("Geoffrey J. McLachlan")),
+  journal      = "Journal of Statistical Software",
+  year         = "2013",
+  volume       = "55",
+  number       = "12",
+  pages        = "1--22",
+  url          = "http://www.jstatsoft.org/v55/i12/",
+
+  textVersion  =
+  paste("Sharon  X. Lee, Geoffrey J. McLachlan (2013).",
+        "EMMIXuskew: An R Package for Fitting Mixtures of Multivariate Skew $t$ Distributions via the EM Algorithm.",
+        "Journal of Statistical Software, 55(12), 1-22.",
+        "URL http://www.jstatsoft.org/v55/i12/.")
+)

@@ -1,0 +1,16 @@
+R package 'EMMIXuskew' changelog
+--------------------------------
+
+2013-10-15  (version 0.11-3)
+	*	first version (uskew_0.11-3) uploaded to CRAN
+
+2013-11-11  (version 0.11-5)	
+	*	renamed to EMMIXuskew
+	*	inserted citation information
+	*	updated references in documentation
+	* 	fixed bug in fmmst.contour.2d and fmmst.contour.3d (plotting region)
+	    If dat is not provided, then the x, y, (and also z if using fmmst.contour.3d) limits must be provided.
+		This option is only available for fmmst.contour.3d and with drawpoints=F.
+	*	added example results using a DLBCL data
+	
+

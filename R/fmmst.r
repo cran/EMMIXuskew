@@ -1,10 +1,10 @@
 #
 #  EM algorithm for Mixture of Unrestricted Multivariate Skew t-distributioins
 #  Package: EMMIX-uskew
-#  Version: 0.11-5
+#  Version: 0.11-6
 #
 #  Code by S. X. Lee
-#  Updated on 14 Oct 2013
+#  Updated on 31 Jul 2014
 #
 # Lee S. and Mclachlan, G.J. (2010) On the fitting of finite mixtures of
 #   multivariate skew t-distributions via the EM algorithm
@@ -17,7 +17,7 @@
 ################################################################################
 
 
-fmmst <- function(g=1, dat, initial=NULL, known=NULL, itmax=100, eps=1e-3, nkmeans=20, print=T, tmethod=1) {
+fmmst <- function(g=1, dat, initial=NULL, known=NULL, itmax=100, eps=1e-3, clust=NULL, nkmeans=20, print=T, tmethod=1) {
 
     if(!is.matrix(dat)) Y <- as.matrix(dat)  else Y <- dat
     p <- ncol(Y); n <- nrow(Y); fulldebug=F
@@ -35,7 +35,7 @@ fmmst <- function(g=1, dat, initial=NULL, known=NULL, itmax=100, eps=1e-3, nkmea
         cat("  ----------------------------------------------------\n\n")
     }
     
-    initial <- init(g, t(Y), initial, known, nkmeans, tmethod)
+    initial <- init(g, t(Y), initial, known, clust, nkmeans, tmethod)
     return(fmmstt(g, p, n, Y, initial, known, nkmeans, itmax, eps, print, fulldebug, tmethod)) 
 }
 
@@ -53,7 +53,7 @@ fmmstt <- function(g=1, p=1, n=1, Y, initial=NULL, known=NULL, nkmeans=20, itmax
         tmp <- computet(g, Y, MU, SIGMA, DELTA, PI, DOF)
         known$tau <- tmp$TAU 
         known$clusters <- apply(known$tau,2,which.max)
-        known$loglik <- known$lk <- tmp$logL
+        known$loglik <- known$lk <- tmp$logL  
         m <- g*(p + p + 0.5*p*(p+1)) + (g-1) + g   
         known$aic <- 2*m - 2*known$loglik
         known$bic <- m*log(N) - 2*known$loglik
@@ -63,13 +63,14 @@ fmmstt <- function(g=1, p=1, n=1, Y, initial=NULL, known=NULL, nkmeans=20, itmax
     if(fulldebug) cat("  ... Initialisation completed ...\n")
     TAU <- eta <- E1 <- E2 <- matrix(0, g, N); E3 <- E4 <- list();
     k <- 1; epsilon <- Inf; 
-    m <- g*(p + p + 0.5*p) + (g-1) + g      
+    m <- g*(p + p + 0.5*p*(p+1)) + (g-1) + g
     TAU <- computet(g, Y, MU, SIGMA, DELTA, PI, DOF, tmethod)$TAU
     LL <- lk <- initial$logL
     aic <- 2*m - 2*LL; bic <- m*log(n) - 2*LL;
     singular <- F;  tauCutOff <- 5e-8; 
     sumTAU <- rowSums(TAU)                                         
-    if(any(sumTAU < p)) stop("one or more of the cluster is too small. Please consider reducing g.\n")  #full options not available for GPL-ed version
+    if(any(sumTAU < p)) stop("one or more of the cluster is too small. Please consider reducing g.\n")  #full options not available for GPL-ed version  
+    if(debug) cat("  Iteration  0 : loglik = ", LL, "\n")
  
     while((k <= itmax) && (epsilon > eps)) {            
         saveDOF <- DOF;
@@ -146,8 +147,8 @@ fmmstt <- function(g=1, p=1, n=1, Y, initial=NULL, known=NULL, nkmeans=20, itmax
         }  
         LL <- newLL
         k <- k+1         
-    }
-    m <- g*(p + p + 0.5*p) + (g-1) + g
+    }                         
+    m <- g*(p + p + 0.5*p*(p+1)) + (g-1) + g
     aic <- 2*m - 2*LL; bic <- m*log(n) - 2*LL;    
     clusters <- apply(TAU,2,which.max)
     results <- list("pro"=PI, "mu"=MU, "sigma"=SIGMA, "delta"=DELTA, "dof"=DOF, 
@@ -179,135 +180,6 @@ computet <- function(g, Y, MU, SIGMA, DELTA, PI, DOF, tmethod=1) {
     }
     return(list(TAU=TAU,logL=logL))
 }
-
-init <- function(g, Y, initial=NULL, fixed=NULL, nkmeans=100, tmethod=1) {
-    P <- dim(Y);  k <- P[1];  N <- P[2]
-    w <- options("warn"); on.exit(options(w)); options(warn=-1)
-    MU <- initial$mu
-    SIGMA <- initial$sigma
-    DELTA <- initial$delta
-    DOF <- initial$dof
-    PI <- initial$pro
-    if (!is.null(fixed$mu)) MU <- fixed$mu 
-    if (!is.null(fixed$sigma)) SIGMA <- fixed$sigma
-    if (!is.null(fixed$delta)) DELTA <- fixed$delta
-    if (!is.null(fixed$dof)) DOF <- fixed$dof
-    if (!is.null(fixed$pro)) PI <- fixed$pro
-    MUflag <- is.null(MU); SIGMAflag <- is.null(SIGMA); DELTAflag <- is.null(DELTA); PIflag <- is.null(PI); DOFflag <- is.null(DOF)   
-    if(!PIflag) if(!checkPI(g, PI)) {
-        cat("WARNING: in fmmst initialisation, pro is not correctly specified.\n")
-        PIflag <- TRUE
-    }  
-    if(!DOFflag) if(!checkDOF(g, DOF)) {
-        cat("WARNING: in fmmst initialisation, dof is not correctly specified.\n")
-        DOFflag <- TRUE
-    }
-    if(!MUflag) if(!checkMU(g, k, MU)) {
-        cat("WARNING: in fmmst initialisation, mu is not correctly specified.\n")
-        MUflag <- TRUE
-    }
-    if(!SIGMAflag) if(!checkSIGMA(g, k, SIGMA)) {
-        cat("WARNING: in fmmst initialisation, sigma is not correctly specified.\n")
-        SIGMAflag <- TRUE
-    }
-    if(!DELTAflag) if(!checkDELTA(g, k, DELTA)) {
-        cat("WARNING: in fmmst initialisation, delta is not correctly specified.\n")
-        DELTAflag <- TRUE
-    }
-    if (MUflag || SIGMAflag || DELTAflag || PIflag || DOFflag) {    
-        if(MUflag) MU <- list()
-        if(SIGMAflag) SIGMA <- list()
-        if(DELTAflag) DELTA <- list()
-        if(PIflag) PI <- vector()
-        if(DOFflag) DOF <- vector()
-        Try <- kmeans(t(Y), g);  Try$MU <- Try$DELTA <- Try$SIGMA <- list()
-        if(any(Try$size < k)) {Try$logL <- maxLL <- -Inf}       
-        for (i in 1:g) {  
-            selectY <- {if(k==1) t(matrix(Y[Try$cluster==i],1)) else t(Y[,Try$cluster==i])}
-            if(MUflag) Try$MU[[i]] <- matrix(Try$centers[i,],k,1) else Try$MU[[i]] <- MU[[i]]
-            if(SIGMAflag) Try$SIGMA[[i]] <- cov(selectY) else Try$SIGMA[[i]] <- SIGMA[[i]]
-            skew <- skewness(selectY)
-            if(DELTAflag) Try$DELTA[[i]] <- -5*(skew <(-0.1)) + 5*(skew>0.1) else Try$DELTA[[i]] <- DELTA[[i]]
-        }
-        if(DOFflag) Try$DOF <- rep(4, g) else Try$DOF <- DOF
-        if(PIflag) Try$PI <- Try$size/N  else Try$PI <- PI
-        maxLL <- Try$logL <- sum(log(dfmmst(t(Y), Try$MU, Try$SIGMA, Try$DELTA, Try$DOF, Try$PI, tmethod=tmethod)))
-        maxRESULT <- Try
-        if(g > 1) {
-            savecluster <- list(); savecluster[[1]] <- maxRESULT$cluster; savecounter <- 2
-            for (nk in 1:nkmeans) {
-                Try <- kmeans(t(Y), g); newclust <- T
-                for (m in 1:(savecounter-1)) { 
-                    if (error.rate(savecluster[[m]], Try$cluster)<0.1) newclust <- F;
-                }
-                if (!newclust) next; 
-                savecluster[[savecounter]] <- Try$cluster; savecounter <- savecounter + 1
-                if(any(Try$size < k)) Try$logL <- -Inf
-                else {                
-                    Try$MU <- Try$SIGMA <- Try$DELTA <- list()
-                    for (i in 1:g) { 
-                        selectY <- {if(k==1) t(matrix(Y[Try$cluster==i],1)) else t(Y[,Try$cluster==i])}
-                        if(MUflag) Try$MU[[i]] <- matrix(Try$centers[i,],k,1) else Try$MU[[i]] <- MU[[i]]
-                        if(SIGMAflag) Try$SIGMA[[i]] <- cov(selectY) else Try$SIGMA[[i]] <- SIGMA[[i]]
-                        skew <- skewness(selectY)
-                        if(DELTAflag) Try$DELTA[[i]] <- -5*(skew <(-0.1)) + 5*(skew>0.1) else Try$DELTA[[i]] <- DELTA[[i]]
-                    }
-                    if(DOFflag) Try$DOF <- rep(4, g) else Try$DOF <- DOF
-                    if(PIflag) Try$PI <- Try$size/N  else Try$PI <- PI
-                    Try$logL <- sum(log(dfmmst(t(Y), Try$MU, Try$SIGMA, Try$DELTA, Try$DOF, Try$PI, tmethod=tmethod)))
-                }
-                if(Try$logL > maxLL) {maxRESULT <- Try; maxLL <- Try$logL}
-            }
-        }
-        INITIAL <- maxRESULT
-        if(maxLL == -Inf) stop("Initialization failed. Sample size is too small. \n")
-        aVec <- seq(0.1, 0.9, by=0.1) 
-        for (it in 1:length(aVec)) {
-            a <- aVec[it]
-            if (g==1) { 
-                problem <- F
-                sampleMEAN <- t(t(rowSums(Y)))/N
-                sampleCOV <- cov(t(Y)); diagSCOV <- diag(k); diag(diagSCOV) <- diag(sampleCOV)
-                sampleSKEW <- skewness(t(Y))
-                if(PIflag)    PI <- 1
-                if(DOFflag)   DOF <- 40
-                if(SIGMAflag) SIGMA[[1]] <- sampleCOV + (a-1)*diagSCOV
-                if(DELTAflag) DELTA[[1]] <- sqrt((1-a)/(1-2/pi))*matrix(sqrt(diag(sampleCOV)),k,1)*sign(sampleSKEW)
-                if(MUflag)    MU[[1]] <- sampleMEAN - sqrt(2/pi)*DELTA[[1]]
-                if (det(SIGMA[[1]]) <= 0) {problem <- T}
-            } else{ 
-                MEAN <- INITIAL$centers
-                CLUST <- INITIAL$cluster
-                if(PIflag)  PI <- INITIAL$size/N
-                if(DOFflag) DOF <- rep(40,g)
-                problem <- F
-                for (i in 1:g) { 
-                    selectY <- {if(k==1) t(matrix(Y[CLUST==i],1)) else t(Y[,CLUST==i])}
-                    sampleMEAN <- matrix(MEAN[i,],k,1)
-                    sampleCOV <- cov(selectY); diagSCOV <- diag(k); diag(diagSCOV)<-diag(sampleCOV)
-                    sampleSKEW <- skewness(selectY)
-                    if(SIGMAflag)  SIGMA[[i]] <- sampleCOV + (a-1)*diagSCOV                                                   
-                    if(DELTAflag)  DELTA[[i]] <- sqrt((1-a)/(1-2/pi))*matrix(sqrt(diag(sampleCOV)),k,1)*sign(sampleSKEW)     
-                    if(MUflag)     MU[[i]] <- sampleMEAN - sqrt(2/pi)*DELTA[[i]]                                              
-                    if (det(SIGMA[[i]]) <= 0) {problem <- T; break;}
-                }
-            }
-            if(problem) LL <- -Inf
-            else {
-                LL <- try(sum(log(dfmmst(t(Y), MU, SIGMA, DELTA, DOF, PI, tmethod=tmethod))), silent=T)
-                if(!is.numeric(LL)) LL <- -Inf
-            }
-            result <- list("MU"=MU, "SIGMA"=SIGMA, "DELTA"=DELTA, "PI"=PI, "DOF"=DOF, "logL"=LL)
-            if (LL > maxLL) {maxRESULT <- result; maxLL <- LL}
-        } 
-    } else {           
-        logL <- sum(log(dfmmst(t(Y), MU, SIGMA, DELTA, DOF, PI)))
-        maxRESULT <- list("MU"=MU, "SIGMA"=SIGMA, "DELTA"=DELTA, "PI"=PI, "DOF"=DOF, "logL"=logL)
-    }
-    maxRESULT$fflag <- list("MU"=!is.null(fixed$mu), "SIGMA"=!is.null(fixed$sigma), "DELTA"=!is.null(fixed$delta), "PI"=!is.null(fixed$pro), "DOF"=!is.null(fixed$dof))
-    return(maxRESULT)
-}
-
 
 
 .dds <- function(a, mu, sigma, dof, tmethod=1) {

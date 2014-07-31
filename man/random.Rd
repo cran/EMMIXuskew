@@ -75,14 +75,14 @@ The last column specifies which component each data point is generated from.
 Lee S, McLachlan G (2011). On the fitting of mixtures of multivariate skew t-distributions
 via the EM algorithm. arXiv:1109.4706 [stat.ME]
 
-Lee, S. and McLachlan, G.J. (2013) Finite mixtures of multivariate 
+Lee, S. and McLachlan, G.J. (2014) Finite mixtures of multivariate 
 skew t-distributions: some recent and new results. 
-Statistics and Computing. To appear
+Statistics and Computing, 24, 181-202. 
 
 Lee, S. and McLachlan, G.J. (2013) EMMIXuskew: An \code{R} package for
 fitting mixtures of multivariate skew t-distributions via the EM algorithm.
 Journal of Statistical Software, 55(12), 1-22.
-URL http://www.jstatsoft.org/v55/i12/.
+URL \url{http://www.jstatsoft.org/v55/i12/}.
 }
 %%\author{
 %%  ~~who you are~~

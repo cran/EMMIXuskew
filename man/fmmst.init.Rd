@@ -1,25 +1,17 @@
-\name{fmmst}
-\alias{fmmst}
-\alias{summary.fmmst}
-\alias{print.fmmst}
+\name{fmmst.init}
+\alias{fmmst.init}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Fitting Finite Mixtures of Unrestricted Multivariate Skew t Distributions
+Initialization for Fitting Finite Mixtures of Unrestricted Multivariate Skew t Distributions
 }
 \description{
-Computes maximum likelihood estimators (MLE) for finite mixtures of unrestricted 
-multivariate skew t (FM-MST) model via the EM algorithm.
+Computes different sets of initial values for finite mixtures of unrestricted 
+multivariate skew t (FM-uMST) model based on an initial clustering.
 }
 \usage{
-fmmst(g = 1, dat, initial = NULL, known = NULL, itmax = 100, 
-    eps = 1e-03, clust=NULL, nkmeans=20, print = T, tmethod=1)
-\method{summary}{fmmst}(object, ...)
-\method{print}{fmmst}(x, ...)                     
+fmmst.init(g, dat, known=NULL, clust=NULL, nkmeans=20, tmethod=1)
 }
 \arguments{
-  \item{object, x}{
-    an object class of class \code{"fmmst"}, i.e. a fitted model.
-}
   \item{g}{
     a scalar specifying the number of components in the mixture model
 }
@@ -27,23 +19,10 @@ fmmst(g = 1, dat, initial = NULL, known = NULL, itmax = 100,
     the data matrix giving the coordinates of the point(s) where the density is evaluated.
     This is either a vector of length \code{p} or a matrix with \code{p} columns.
 }
-  \item{initial}{
-  (optional) a list containing the initial parameters of the mixture model. 
-  See the 'Details' section. The default is \code{NULL}. 
-}
   \item{known}{
   (optional) a list containing parameters of the mixture model that are known
   and not required to be estimated. See the 'Details' section. The default is \code{NULL}.
 }
-  \item{itmax}{
-  (optional) a positive integer specifying the maximum number of EM iterations 
-  to perform. The default is \code{100}.
-}
-  \item{eps}{
-  (optional) a numeric value used to control the termination criteria for the EM loops.
-  It is the maximum tolerance for the absolute difference between the log-likelihood value
-  and the asymptotic log likelihood value. The default is \code{1e-6}.
-}   
   \item{clust}{
   (optional) a numeric value of length \code{nrow(dat)} containing the 
   initial labels for each data point in \code{dat}. The default is \code{NULL},
@@ -53,29 +32,28 @@ fmmst(g = 1, dat, initial = NULL, known = NULL, itmax = 100,
   (optional) a numeric value indicating how many k-means trials to be used 
   when searching for initial values. The default is \code{20}.
 }
-  \item{print}{
-  (optional) a logical value. If \code{TRUE}, output for each iteration will be printed out.
-  if \code{FALSE}, no output is printed. The default is \code{TRUE}. See the 'Details' section. 
-} 
   \item{tmethod}{
   (optional) an integer indicating which method to use when computing t distribution function values. 
   See \code{\link{pmt}} for details.
 }
-  \item{\dots}{ not used. }
 }
 \details{
-The arguments \code{init} and \code{known}, if specified, is a list structure containing
-at least one of \code{mu}, \code{sigma}, \code{delta}, \code{dof}, \code{pro} 
-(See \code{\link{dfmmst}} for the structure of each of these elements). 
-If \code{init=FALSE} (default), the program uses an automatic approach based on 
-k-means clustering to generate an initial value for the model parameters.
-Note that this may not provide the best results.
-
 As the EM algorithm is sensitive to the starting value, 
 it is highly recommended to apply a wide range different initializations.
-A simple strategy is implemented in \code{\link{fmmst.init}}.  
+To obtain different sets of starting values using the strategy described in 
+Section 5.1.3 of Lee and McLachlan (2014), \code{fmmst.init()} can be used, 
+which will return a list of objects with the same structure as \code{initial}.
+An example is given in the examples section below.
+                                                          
+The argument \code{known}, if specified, is a list structure containing
+at least one of \code{mu}, \code{sigma}, \code{delta}, \code{dof}, \code{pro} 
+(See \code{\link{dfmmst}} for the structure of each of these elements). 
+Note that although not all parameters need to be provided in \code{known}, 
+the parameters that are provided must be fully specified. 
+They cannot be partially specified, e.g. only some elements or some components are specified. 
 }
 \value{
+a list of initializations for \code{fmmst}, each containing the following parameters:
   \item{mu}{
     a list of \code{g} numeric matrices containing the location parameter for each component.
 }
@@ -92,25 +70,13 @@ A simple strategy is implemented in \code{\link{fmmst.init}}.
     a vector of length of \code{g} specifying the mixing proportions for each component.
 }
   \item{tau}{
-   an \code{g} by \code{n} matrix of posterior probability of component membership. 
+   an \code{g} by \code{n} matrix of initial probability of component membership. 
 }
   \item{clusters}{
-   a vector of length {n} of final partition.  
+   a vector of length {n} of initial partition.  
 }
   \item{loglik}{
-   the final log likelihood value.    
-}
-  \item{lk}{
-   a vector of log likelihood values at each EM iteration.
-}
-  \item{iter}{
-   number of iterations performed.
-}
-  \item{eps}{
-   the final absolute difference between the log likelihood value and the asymptotic log likelihood value.
-} 
-  \item{aic, bic}{
-   Akaike Information Criterion (AIC), Bayes Information Criterion (BIC)
+   the initial log likelihood value.    
 }
 }
 \references{
@@ -128,14 +94,22 @@ URL \url{http://www.jstatsoft.org/v55/i12/}.
  
 }
 \seealso{
-\code{\link{fmmst.init}}, \code{\link{rfmmst}}, \code{\link{dfmmst}}, \code{\link{fmmst.contour.2d}}
+\code{\link{rfmmst}}, \code{\link{dfmmst}}, \code{\link{fmmst.contour.2d}}
 }
 \examples{
 #a short demo using AIS data
 data(ais)
-Fit <- fmmst(2, ais[,c(2,12)], itmax=5) 
-summary(Fit)
-print(Fit)
+Fit.init <- fmmst.init(2, ais[,c(2,12)])  
+
+#the number of available initializations
+length(Fit.init)  
+
+#getting the first set of available initialization
+Fit.init[[1]]     
+\dontrun{
+Fit1 <- fmmst(2, ais[,c(2,12)], initial=Fit.init[[1]])
+Fit2 <- fmmst(2, ais[,c(2,12)], initial=Fit.init[[2]])
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

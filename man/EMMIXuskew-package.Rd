@@ -15,9 +15,9 @@ and visualisation (in 2D and 3D) is also provided.
 \tabular{ll}{
 Package: \tab EMMIXuskew\cr
 Type: \tab Package\cr
-Version: \tab 0.11-5\cr
-Date: \tab 2013-11-11\cr
-License: \tab GPL\cr
+Version: \tab 0.11-6\cr
+Date: \tab 2014-07-31\cr
+Licence: \tab GPL\cr
 LazyLoad: \tab yes\cr
 }
 
@@ -29,14 +29,14 @@ S.X. Lee, G.J. McLachlan
 Lee S, McLachlan G (2011). On the fitting of mixtures of multivariate skew t-distributions
 via the EM algorithm. arXiv:1109.4706 [stat.ME]
 
-Lee, S. and McLachlan, G.J. (2012) Finite mixtures of multivariate 
+Lee, S. and McLachlan, G.J. (2014) Finite mixtures of multivariate 
 skew t-distributions: some recent and new results. 
-Statistics and Computing. To appear
+Statistics and Computing, 24, 181-202. 
                                      
 Lee, S. and McLachlan, G.J. (2013) EMMIXuskew: An \code{R} package for
 fitting mixtures of multivariate skew t-distributions via the EM algorithm.
 Journal of Statistical Software, 55(12), 1-22.
-URL http://www.jstatsoft.org/v55/i12/.
+URL \url{http://www.jstatsoft.org/v55/i12/}.
 }
 \keyword{ package }
 \seealso{

@@ -17,7 +17,7 @@ fmmst.contour.3d(dat, model, grid=20, drawpoints=TRUE, levels=0.9,
 }
 \arguments{
   \item{dat}{
-    the data matrix giving the coordinates of the point(s) where the density is evluated.
+    the data matrix giving the coordinates of the point(s) where the density is evaluated.
     This must be a matrix with at least \code{2} columns for \code{fmmst.contour.2d} 
     or \code{3} columns for \code{fmmst.contour.3d}.
     If \code{dat} is not provided, then \code{xlim}, \code{ylim} and \code{zlim}
@@ -72,7 +72,7 @@ fmmst.contour.3d(dat, model, grid=20, drawpoints=TRUE, levels=0.9,
 \code{fmmst.contour.2d} draw contour plots for bivariate densities. 
 The argument \code{dat} must be provided and must contain at least \code{2} columns.
 Note that only the first two columns of \code{dat} will be used if \code{dat} have more than \code{2} columns.
-For bivaraite datset, the data points can be drawn as a scatter plot by specifying \code{map="scatter"} (default),
+For bivariate datset, the data points can be drawn as a scatter plot by specifying \code{map="scatter"} (default),
 or as an intensity plot (\code{map="heat"}). 
 Alternatively, a cluster map can be drawn instead (\code{map="cluster"}). 
 Note that if an intensity plot is used, the data points will not be drawn, that is,

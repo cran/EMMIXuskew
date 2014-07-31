@@ -24,7 +24,7 @@ fmmt(g = 1, dat, initial = NULL, known = NULL, itmax = 100,
     a scalar specifying the number of components in the mixture model
 }
   \item{dat}{
-    the data matrix giving the coordinates of the point(s) where the density is evluated.
+    the data matrix giving the coordinates of the point(s) where the density is evaluated.
     This is either a vector of length \code{p} or a matrix with \code{p} columns.
 }
   \item{initial}{
@@ -32,7 +32,7 @@ fmmt(g = 1, dat, initial = NULL, known = NULL, itmax = 100,
   See the 'Details' section. The default is \code{NULL}.
 }
   \item{known}{
-  (optional) a list containig parameters of the mixture model that are known
+  (optional) a list containing parameters of the mixture model that are known
   and not required to be estimated. See the 'Details' section. The default is \code{NULL}.
 }
   \item{itmax}{
@@ -41,12 +41,12 @@ fmmt(g = 1, dat, initial = NULL, known = NULL, itmax = 100,
 }
   \item{eps}{
   (optional) a numeric value used to control the termination criteria for the EM loops.
-  It is the maximum tolerance for the absolute difference between the log-likleihood value
+  It is the maximum tolerance for the absolute difference between the log-likelihood value
   and the asymptotic log likelihood value. The default is \code{1e-6}.
 }
   \item{nkmeans}{
   (optional) a numeric value indicating how many k-means trials to be used 
-  when searching for the best initial values. The default is \code{20}.
+  when searching for initial values. The default is \code{20}.
 } 
   \item{print}{
   (optional) a logical value. If \code{TRUE}, output for each iteration will be printed out.
@@ -81,7 +81,7 @@ k-means clustering to generate an initial value for the model parameters.
    a vector of length {n} of final partition.
 }
   \item{loglik}{
-   the final log likelihodd value.
+   the final log likelihood value.
 }
   \item{lk}{
    a vector of log likelihood values at each EM iteration.
@@ -97,7 +97,7 @@ k-means clustering to generate an initial value for the model parameters.
 }
 }
 \references{
-McLachlan G.J. and Krishnan T. (2008). The EM Algorithm and Extensions (2nd). New Jersay:
+McLachlan G.J. and Krishnan T. (2008). The EM Algorithm and Extensions (2nd). New Jersey:
 Wiley.
 
 McLachlan G.J. and Peel D. (2000). Finite Mixture Models. New York: Wiley.

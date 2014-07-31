@@ -7,7 +7,7 @@
 Multivariate t distribution
 }
 \description{
-The probability density function and distribtuion function for the multivariate Student t distribution
+The probability density function and distribution function for the multivariate Student t distribution
 and mixtures of multivariate t distribution
 }
 \usage{
@@ -18,7 +18,7 @@ dfmmt(dat, mu = NULL, sigma = NULL, dof = NULL, pro = NULL, known = NULL)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
-    for \code{dmt}, this is the data matrix giving the coordinates of the point(s) where the density is evluated.
+    for \code{dmt}, this is the data matrix giving the coordinates of the point(s) where the density is evaluated.
     for \code{pmt}, this is either a vector of length \code{p}.
     Currently, only \code{p} up to \code{20} dimensions is supported.
 }
@@ -90,8 +90,10 @@ mu <- c(1,12,2)
 sigma <- matrix(c(1,2,0,2,5,0.5,0,0.5,3), 3, 3)
 dof <- 4
 f  <- dmt(cbind(x,y,z), mu, sigma,dof)
+\dontrun{                      
 p1 <- pmt(c(2,11,3), mu, sigma, dof)
 p2 <- pmt(c(2,11,3), mu, sigma, dof, maxpts=10000, abseps=1e-8)
+}
 
 obj <- list()
 obj$mu <- list(c(17,19), c(5,22), c(6,10))

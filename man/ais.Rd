@@ -5,7 +5,7 @@
 Australian Institute of Sports (AIS) data
 }
 \description{
-Data on 102 male and 100 female atheles collected at the Australian Insitute of Sport.
+Data on 102 male and 100 female athletes collected at the Australian Institute of Sport.
 }
 \usage{data(ais)}
 \format{
@@ -19,7 +19,7 @@ Data on 102 male and 100 female atheles collected at the Australian Insitute of 
     \item{\code{WCC}}{White cell count}
     \item{\code{Hc}}{Hematpcrit}
     \item{\code{Hg}}{Hematocrit}
-    \item{\code{Ferr}}{Plasma ferritin concerntration}
+    \item{\code{Ferr}}{Plasma ferritin concentration}
     \item{\code{BMI}}{Body mass index = weight / (height^2)}
     \item{\code{SSF}}{sum of skin folds}
     \item{\code{Bfat}}{Percent body fat}

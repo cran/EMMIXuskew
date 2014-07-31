@@ -18,7 +18,7 @@ dmst(dat, mu = NULL, sigma = NULL, delta = NULL, dof = 1, known = NULL, tmethod=
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
-    the data matrix giving the coordinates of the point(s) where the density is evluated.
+    the data matrix giving the coordinates of the point(s) where the density is evaluated.
     This is either a vector of length \code{p} or a matrix with \code{p} columns.
 }
   \item{mu}{
@@ -88,9 +88,9 @@ Applications to Bayesian Regression Models. The Canadian Journal of Statistics, 
 Lee S, McLachlan G (2011). On the fitting of mixtures of multivariate skew t-distributions via the
 EM algorithm. arXiv:1109.4706 [stat.ME]
 
-Lee, S. and McLachlan, G.J. (2013) Finite mixtures of multivariate 
+Lee, S. and McLachlan, G.J. (2014) Finite mixtures of multivariate 
 skew t-distributions: some recent and new results. 
-Statistics and Computing. To appear
+Statistics and Computing, 24, 181-202. 
 }
 %%\author{
 %%  ~~who you are~~

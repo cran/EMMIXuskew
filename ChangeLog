@@ -1,16 +1,25 @@
 R package 'EMMIXuskew' changelog
 --------------------------------
 
-2013-10-15  (version 0.11-3)
-	*	first version (uskew_0.11-3) uploaded to CRAN
-
+2014-08-01 (version 0.11-6)
+	* 	fixed bug in initialization of fmmst (nkmeans)
+	* 	fixed bug in the calculation of m
+	* 	fmmst initialization now accepts a user specified initial clustering
+	* 	fmmst will now print the initial log likelihood value 
+	* 	new function to calculate a number of different sets of starting values based on each initial clustering 
+	* 	added example DLBCL data
+	
 2013-11-11  (version 0.11-5)	
-	*	renamed to EMMIXuskew
+	*	renamed to EMMIXuskew (uskew archived)
 	*	inserted citation information
 	*	updated references in documentation
 	* 	fixed bug in fmmst.contour.2d and fmmst.contour.3d (plotting region)
-	    If dat is not provided, then the x, y, (and also z if using fmmst.contour.3d) limits must be provided.
+		If dat is not provided, then the x, y, (and also z if using fmmst.contour.3d) limits must be provided.
 		This option is only available for fmmst.contour.3d and with drawpoints=F.
 	*	added example results using a DLBCL data
+	
+2013-10-15  (version 0.11-3)
+	*	first version (uskew_0.11-3) uploaded to CRAN
+
 	
 

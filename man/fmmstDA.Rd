@@ -2,10 +2,10 @@
 \alias{fmmstDA} 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Discriminant analysis using Multivariate Skew t Mixtrue Models
+Discriminant analysis using Multivariate Skew t Mixture Models
 }
 \description{
-performs discriminant analysis (DA) for a specified multivariate skew t mixture distribtuion.
+performs discriminant analysis (DA) for a specified multivariate skew t mixture distribution.
 }
 \usage{
 fmmstDA(g, dat, model, tmethod=1)  
@@ -38,7 +38,7 @@ For the structure of the elements of \code{model}, see \code{\link{dfmmst}}.
 Lee, S. and McLachlan, G.J. (2013) EMMIXuskew: An \code{R} package for
 fitting mixtures of multivariate skew t-distributions via the EM algorithm.
 Journal of Statistical Software, 55(12), 1-22.
-URL http://www.jstatsoft.org/v55/i12/.
+URL \url{http://www.jstatsoft.org/v55/i12/}.
 }
 \seealso{
 \code{\link{dfmmst}}, \code{\link{fmmst}}

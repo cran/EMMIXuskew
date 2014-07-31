@@ -2,7 +2,7 @@
 \alias{delta.test}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Testing for the significance os the skewness parameter in a FM-MST model
+Testing for the significance of the skewness parameter in a FM-MST model
 }
 \description{
 Perform a likelihood ratio for the significance of the skewness parameter
@@ -50,7 +50,7 @@ returns the P-value of the test
 Lee, S. and McLachlan, G.J. (2013) EMMIXuskew: An \code{R} package for
 fitting mixtures of multivariate skew t-distributions via the EM algorithm.
 Journal of Statistical Software, 55(12), 1-22.
-URL http://www.jstatsoft.org/v55/i12/.
+URL \url{http://www.jstatsoft.org/v55/i12/}.
 }
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~

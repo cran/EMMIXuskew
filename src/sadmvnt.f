@@ -63,6 +63,14 @@
       PARAMETER ( NL = 20 )
       PARAMETER ( LENWRK = 20*NL**2 )
       DOUBLE PRECISION WORK(LENWRK)
+*      
+*     [AA (2014-06-25)] next DO loop initializes WORK array,
+*     un-initialized in original code which caused complaints of some compilers
+*
+      DO I = 1,LENWRK
+         WORK(I) = 0.0D0
+      ENDDO
+
       IF ( N .GT. 20 .OR. N .LT. 1 ) THEN
          INFORM = 2
          VALUE = 0
@@ -1406,7 +1414,15 @@
       PARAMETER ( NL = 20 )
       PARAMETER ( LENWRK = 20*NL**2 )
       DOUBLE PRECISION WORK(LENWRK)
-      DOUBLE PRECISION FNCMVT
+      DOUBLE PRECISION FNCMVT 
+*      
+*     [AA (2014-06-25)] next DO loop initializes WORK array,
+*     un-initialized in original code which caused complaints of some compilers
+*
+      DO I = 1,LENWRK
+         WORK(I) = 0.0D0
+      ENDDO
+
       IF ( N .GT. 20 .OR. N .LT. 1 ) THEN
          INFORM = 2
          VALUE = 0
